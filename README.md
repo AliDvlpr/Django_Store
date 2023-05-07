@@ -1,12 +1,11 @@
 # Simple_Store
-a simple store backend created with django, drf and ...
+A simple store backend created with Django, DRF, and ...
 
-
-# How to run:
-1 clone the repository and pull it to your host / vps
-2 run "pip install requirements"
-3 config your database in storefront/settings.py ( Best options: Postgresql, Mysql, ... )
-4 run "python manage.py migrate"
-5 run the project using one of these:
- server     : "gunicorn --workers=6 --bind 0.0.0.0:3000 storefront.wsgi"
- localhost: : "python manage.py runserver"
+## How to Run
+1. Clone the repository and pull it to your host/VPS.
+2. Run `pip install -r requirements.txt`.
+3. Configure your database in `storefront/settings.py`. (Best options: PostgreSQL, MySQL, ...)
+4. Run `python manage.py migrate`.
+5. Run the project using one of these:
+   - Server: `gunicorn --workers=6 --bind 0.0.0.0:3000 storefront.wsgi`.
+   - Localhost: `python manage.py runserver`.
