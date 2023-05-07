@@ -10,3 +10,8 @@ A simple store backend created with Django, DRF, and ...
 6. Run the project using one of these:
    - Server: `gunicorn --workers=6 --bind 0.0.0.0:3000 storefront.wsgi`.
    - Localhost: `python manage.py runserver`.
+
+## Attention
+This app is under development and there may be errors in its launch or execution.
+Please cooperate with me to fix these errors, thank you.
+You can contact me on social networks.
