@@ -1,0 +1,9 @@
+{
+    "app": "optimistic-tesla-kkfg0eutw",
+    "disks": [
+      {
+        "name": "media",
+        "mountTo": "media/store"
+      }
+    ]
+  }

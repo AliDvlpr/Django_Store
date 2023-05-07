@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}" />
+    <style>
+      body{
+        margin: 0;
+        background-color: #007bff;
+
+      }
+
+      .container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .child{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 15%;
+        width: 500px;
+        height: 250px;
+        background-color: #3990ee;
+        border-radius: 10px;
+        box-shadow: 10px 5px 5px rgb(113, 113, 113);
+      }
+
+      .child p{
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bolder;
+        font-size: larger;
+        color: #003874;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="child">
+        <!-- <img src="{% static 'core/logo.png' %}" alt="atlas pump tabriz logo"> -->
+        <p>Atlas Pump Tabriz API Service</p>
+      </div>
+    </div>
+  </body>
+</html>
