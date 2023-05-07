@@ -12,6 +12,8 @@ A simple store backend created with Django, DRF, and ...
    - Localhost: `python manage.py runserver`.
 
 ## Attention
-This app is under development and there may be errors in its launch or execution.
-Please cooperate with me to fix these errors, thank you.
-You can contact me on social networks.
+Please note that this app is currently in development and may contain errors during its launch or execution. Your cooperation in identifying and fixing any issues is greatly appreciated.
+
+If you encounter any errors or have feedback, please feel free to contact me through my social media accounts.
+
+Thank you for your support!
