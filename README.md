@@ -1,4 +1,4 @@
-# Simple_Store
+# Django Store
 A simple store backend created with Django, DRF, and ...
 
 ## How to Run
