@@ -19,24 +19,43 @@ class InventoryFilter(admin.SimpleListFilter):
         if self.value() == '<10':
             return queryset.filter(inventory__lt=10)
 
+@admin.register(models.ProductAttributes)
+class ProductAttributesAdmin(admin.ModelAdmin):
+    list_display = ['attribute', 'Product']
+    list_per_page = 10
+
+@admin.register(models.ProductPowers)
+class ProductPowersAdmin(admin.ModelAdmin):
+    list_display = ['power', 'unit', 'Product']
+    list_per_page = 10
+
+class ProductImageInline(admin.TabularInline):
+    model = models.ProductImage
+    readonly_fields = ['thumbnail']
+
+    def thumbnail(self, instance):
+        if instance.image.name != '':
+            return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
+        return ''
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['collection']
+    autocomplete_fields = ['group']
     prepopulated_fields = {
         'slug': ['title']
     }
     actions = ['clear_inventory']
+    inlines = [ProductImageInline]
     list_display = ['title', 'unit_price',
-                    'inventory_status', 'collection_title']
+                    'inventory_status', 'group_title']
     list_editable = ['unit_price']
-    list_filter = ['collection', 'last_update', InventoryFilter]
+    list_filter = ['group', 'last_update', InventoryFilter]
     list_per_page = 10
-    list_select_related = ['collection']
+    list_select_related = ['group']
     search_fields = ['title']
 
-    def collection_title(self, product):
-        return product.collection.title
+    def group_title(self, product):
+        return product.group.title
 
     @admin.display(ordering='inventory')
     def inventory_status(self, product):
@@ -53,22 +72,27 @@ class ProductAdmin(admin.ModelAdmin):
             messages.ERROR
         )
 
+    class Media:
+        css = {
+            'all': ['store/style.css']
+        }
 
-@admin.register(models.Collection)
-class CollectionAdmin(admin.ModelAdmin):
+@admin.register(models.Group)
+class GroupAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['product']
     autocomplete_fields = ['featured_product']
     list_display = ['title', 'products_count']
     search_fields = ['title']
 
     @admin.display(ordering='products_count')
-    def products_count(self, collection):
+    def products_count(self, group):
         url = (
             reverse('admin:store_product_changelist')
             + '?'
             + urlencode({
-                'collection__id': str(collection.id)
+                'group__id': str(group.id)
             }))
-        return format_html('<a href="{}">{} Products</a>', url, collection.products_count)
+        return format_html('<a href="{}">{} products</a>', url, group.products_count)
 
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
@@ -76,12 +100,34 @@ class CollectionAdmin(admin.ModelAdmin):
         )
 
 
+@admin.register(models.Collection)
+class CollectionAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['group']
+    autocomplete_fields = ['featured_group']
+    list_display = ['title', 'groups_count']
+    search_fields = ['title']
+
+    @admin.display(ordering='groups_count')
+    def groups_count(self, collection):
+        url = (
+            reverse('admin:store_group_changelist')
+            + '?'
+            + urlencode({
+                'collection__id': str(collection.id)
+            }))
+        return format_html('<a href="{}">{} groups</a>', url, collection.groups_count)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            groups_count=Count('groups')
+        )
+
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name',  'membership', 'orders']
-    list_editable = ['membership']
+    list_display = ['first_name', 'last_name',  'nationalid', 'orders']
     list_per_page = 10
-    ordering = ['first_name', 'last_name']
+    list_select_related = ['user']
+    ordering = ['user__first_name', 'user__last_name']
     search_fields = ['first_name__istartswith', 'last_name__istartswith']
 
     @admin.display(ordering='orders_count')
@@ -113,3 +159,8 @@ class OrderAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
     inlines = [OrderItemInline]
     list_display = ['id', 'placed_at', 'customer']
+
+@admin.register(models.Guarantee)
+class GuaranteeAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['product']
+    list_display = ['id', 'serial',  'product', 'is_active', 'mobile', 'created_date', 'activated_date']

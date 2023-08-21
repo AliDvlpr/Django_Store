@@ -21,7 +21,6 @@ class Tag(models.Model):
     def __str__(self) -> str:
         return self.label
 
-
 class TaggedItem(models.Model):
     objects = TaggedItemManager()
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
